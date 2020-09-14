@@ -1,17 +1,13 @@
- /*ÄÄÇ»ÅÍº¸¾È°úÁ¦ - Modified AES ±¸Çö
-   ÄÄÇ»ÅÍ°øÇĞ°ú
-   12151343
-   °íÀç°æ
-   2019.10.29
-   */
+// AES êµ¬í˜„
+// 
 
 #include<stdio.h>
 #include<stdlib.h>
-// in : ¾ÏÈ£È­ È¤Àº º¹È£È­µÉ ¹®ÀåÀ» ÀúÀåÇÏ´Â ¹è¿­
-// out : ¾ÏÈ£È­ È¤Àº º¹È£È­µÈ ¹®ÀåÀ» ÀúÀåÇÏ´Â ¹è¿­
-// state : ¾ÏÈ£È­ È¤Àº º¹È£È­ ¶ó¿îµå Áß°£°ªÀ» ÀúÀåÇÏ´Â ¹è¿­
+// in : ì•”í˜¸í™” í˜¹ì€ ë³µí˜¸í™”ë  ë¬¸ì¥ì„ ì €ì¥í•˜ëŠ” ë°°ì—´
+// out : ì•”í˜¸í™” í˜¹ì€ ë³µí˜¸í™”ëœ ë¬¸ì¥ì„ ì €ì¥í•˜ëŠ” ë°°ì—´
+// state : ì•”í˜¸í™” í˜¹ì€ ë³µí˜¸í™” ë¼ìš´ë“œ ì¤‘ê°„ê°’ì„ ì €ì¥í•˜ëŠ” ë°°ì—´
 unsigned char in[16], out[16], state[4][4];
-// È®ÀåµÈ Å°¸¦ ÀúÀåÇÏ´Â ¹è¿­
+// í™•ì¥ëœ í‚¤ë¥¼ ì €ì¥í•˜ëŠ” ë°°ì—´
 unsigned char RoundKey[180];
 // Key
 unsigned char Key[16];
@@ -50,7 +46,7 @@ void MakeSbox() {
 	sbox[0] = 0x15;
 }
 
-//S-box¸¦ ÀÌ¿ëÇÏ¿© inverse S-box »ı¼º
+//S-boxë¥¼ ì´ìš©í•˜ì—¬ inverse S-box ìƒì„±
 void MakeInverseSbox() {
 	int temp, row, col;
 	for (int i = 0; i < 256; i++) {
@@ -62,13 +58,13 @@ void MakeInverseSbox() {
 	return;
 }
 
-//key È®Àå ÇÔ¼ö
+//key í™•ì¥ í•¨ìˆ˜
 void KeyExpansion()
 {
 	printf("KEY EXPANSION\n");
 	int i, j;
 	unsigned char temp[4], k;
-	// Ã³À½ ¶ó¿îµåÅ° »ı¼º
+	// ì²˜ìŒ ë¼ìš´ë“œí‚¤ ìƒì„±
 	printf("ROUND 0: ");
 	for (i = 0; i < 4; i++)
 	{
@@ -108,7 +104,7 @@ void KeyExpansion()
 		i++;
 	}
 }
-// round key¸¦ state¿¡ ´õÇÏ´Â(XOR) ÇÔ¼ö
+// round keyë¥¼ stateì— ë”í•˜ëŠ”(XOR) í•¨ìˆ˜
 void AddRoundKey(int round)
 {
 	printf("AR: ");
@@ -122,7 +118,7 @@ void AddRoundKey(int round)
 			printf("%.2X ", state[j][i]);
 	printf("\n");
 }
-// state ÀÇ °ªÀ» sbox¸¦ ÀÌ¿ëÇÏ¿© Ä¡È¯ÇÏ´Â ÇÔ¼ö
+// state ì˜ ê°’ì„ sboxë¥¼ ì´ìš©í•˜ì—¬ ì¹˜í™˜í•˜ëŠ” í•¨ìˆ˜
 void SubBytes()
 {
 	printf("SB: ");
@@ -136,7 +132,7 @@ void SubBytes()
 			printf("%.2X ", state[j][i]);
 	printf("\n");
 }
-// state ÀÇ °ªÀ» Inverse sbox¸¦ ÀÌ¿ëÇÏ¿© Ä¡È¯ÇÏ´Â ÇÔ¼ö
+// state ì˜ ê°’ì„ Inverse sboxë¥¼ ì´ìš©í•˜ì—¬ ì¹˜í™˜í•˜ëŠ” í•¨ìˆ˜
 void InvSubBytes()
 {
 	printf("SB: ");
@@ -151,7 +147,7 @@ void InvSubBytes()
 	printf("\n");
 }
 
-// stateÀÇ Çà¸¶´Ù °¢°¢ left shift¸¦ ÇÑ´Ù.
+// stateì˜ í–‰ë§ˆë‹¤ ê°ê° left shiftë¥¼ í•œë‹¤.
 void ShiftRows()
 {
 	printf("SR: ");
@@ -182,7 +178,7 @@ void ShiftRows()
 	printf("\n");
 }
 
-// ¿ªÀÇ °è»êÀ» À§ÇØ stateÀÇ Çà¸¶´Ù °¢°¢ right shift¸¦ ÇÑ´Ù.
+// ì—­ì˜ ê³„ì‚°ì„ ìœ„í•´ stateì˜ í–‰ë§ˆë‹¤ ê°ê° right shiftë¥¼ í•œë‹¤.
 void InvShiftRows()
 {
 	printf("SR: ");
@@ -215,9 +211,9 @@ void InvShiftRows()
 			printf("%.2X ", state[j][i]);
 	printf("\n");
 }
-// xtime Àº ÀÔ·Â°ªÀ» 1È¸ left shiftÇÏ¿© modular ¿¬»êÀ» ÇÑ´Ù.
+// xtime ì€ ì…ë ¥ê°’ì„ 1íšŒ left shiftí•˜ì—¬ modular ì—°ì‚°ì„ í•œë‹¤.
 #define xtime(x)   ((x<<1) ^ (((x>>7) & 1) * 0x4d))
-// Multiply ´Â xtimeÀ» ÀÌ¿ëÇÏ¿© xÀÇ y¹è¸¦ modular ¿¬»êÀ» ÇÑ´Ù. 
+// Multiply ëŠ” xtimeì„ ì´ìš©í•˜ì—¬ xì˜ yë°°ë¥¼ modular ì—°ì‚°ì„ í•œë‹¤. 
 #define Multiply(x,y) \
 ( ((y & 1) * x) \
 ^ ((y>>1 & 1) * xtime(x)) \
@@ -225,7 +221,7 @@ void InvShiftRows()
 ^ ((y>>3 & 1) * xtime(xtime(xtime(x)))) \
 ^ ((y>>4 & 1) * xtime(xtime(xtime(xtime(x))))))
 
-// Encryotion °úÁ¤¿¡¼­ stateÀÇ ¿­À» ¼¯´Â ÇÔ¼ö
+// Encryotion ê³¼ì •ì—ì„œ stateì˜ ì—´ì„ ì„ëŠ” í•¨ìˆ˜
 void MixColumns()
 {
 	printf("MC: ");
@@ -250,7 +246,7 @@ void MixColumns()
 	printf("\n");
 }
 
-//Decryption °úÁ¤¿¡¼­ stateÀÇ ¿­À» ¼¯´Â ÇÔ¼ö
+//Decryption ê³¼ì •ì—ì„œ stateì˜ ì—´ì„ ì„ëŠ” í•¨ìˆ˜
 void InvMixColumns()
 {
 	printf("MC: ");
@@ -273,7 +269,7 @@ void InvMixColumns()
 			printf("%.2X ", state[j][i]);
 	printf("\n");
 };
-// ¾ÏÈ£È­ ÇÔ¼ö
+// ì•”í˜¸í™” í•¨ìˆ˜
 void Encrypt()
 {
 	printf("\n\n <------ENCRYPTION------>\n\n");
@@ -310,7 +306,7 @@ void Encrypt()
 }
 
 
-//º¹È£È­ ÇÔ¼ö
+//ë³µí˜¸í™” í•¨ìˆ˜
 void Decrypt()
 {
 	int i, j, round = 0;
